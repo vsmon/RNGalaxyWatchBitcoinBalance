@@ -9,6 +9,7 @@ import {
   AppState,
   Dimensions,
   Easing,
+  Button,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,6 +20,7 @@ import ModalSettings from '../../Components/ModalSettings';
 
 import {storedData, storedParams} from '../../types';
 import FormatNumber from '../../Utils/FormatNumberToLocaleString';
+import CalculateVariation from '../../Utils/CalculateVariation';
 
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
@@ -36,9 +38,23 @@ function Home(): JSX.Element {
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
-  const [bitcoinBalance, setBitcoinBalance] = useState<string>('0');
-  const [bitcoinPrice, setBitcoinPrice] = useState<string>('0');
-  const [investedAmount, setInvestedAmount] = useState<string>('0');
+  const [bitcoinPrice, setBitcoinPrice] = useState<number>(0);
+  const [bitcoinBalance, setBitcoinBalance] = useState<number>(0);
+  const [bitcoinProfit, setBitcoinProfit] = useState<number>(0);
+
+  const [bitcoinPriceVariation, setBitcoinPriceVariation] = useState(0);
+  const [bitcoinBalanceVariation, setBitcoinBalanceVariation] = useState(0);
+  const [bitcoinProfitVariation, setBitcoinProfitVariation] = useState(0);
+
+  const prevBitcoinPrice = useRef<number>(0);
+  const prevBitcoinBalance = useRef<number>(0);
+  const prevBitcoinProfit = useRef<number>(0);
+
+  useEffect(() => {
+    prevBitcoinPrice.current = bitcoinPrice;
+    prevBitcoinBalance.current = bitcoinBalance;
+    prevBitcoinProfit.current = bitcoinProfit;
+  }, [bitcoinPrice]);
 
   const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
@@ -110,11 +126,9 @@ function Home(): JSX.Element {
   async function getBitcoinData() {
     const bitcoinData: storedData = await getStoredData('bitcoin-data');
     if (bitcoinData.bitcoinData) {
-      setBitcoinPrice(FormatNumber(bitcoinData.bitcoinData.bitcoinPrice, 2));
-      setBitcoinBalance(
-        FormatNumber(bitcoinData.bitcoinData.bitcoinBalance, 2),
-      );
-      setInvestedAmount(FormatNumber(bitcoinData.bitcoinData.bitcoinProfit, 2));
+      setBitcoinPrice(bitcoinData.bitcoinData.bitcoinPrice);
+      setBitcoinBalance(bitcoinData.bitcoinData.bitcoinBalance);
+      setBitcoinProfit(bitcoinData.bitcoinData.bitcoinProfit);
     }
   }
 
@@ -139,15 +153,27 @@ function Home(): JSX.Element {
 
       const bitcoinBalance: number = bitcoinAmount * bitcoinPrice;
 
+      const profit: number = bitcoinBalance - investedAmount;
+
       /*const bitcoinAmount: number[] = await getBalances(address);
        const bitcoinBalance: number = bitcoinAmount.reduce((prev, accum) => {
         accum += prev;
         return accum * bitcoinPrice;
       }); */
 
-      setBitcoinPrice(FormatNumber(bitcoinPrice, 2));
-      setBitcoinBalance(FormatNumber(bitcoinBalance, 2));
-      setInvestedAmount(FormatNumber(bitcoinBalance - investedAmount, 2));
+      setBitcoinPrice(bitcoinPrice);
+      setBitcoinBalance(bitcoinBalance);
+      setBitcoinProfit(profit);
+
+      setBitcoinPriceVariation(
+        CalculateVariation(bitcoinPrice, prevBitcoinPrice.current),
+      );
+      setBitcoinBalanceVariation(
+        CalculateVariation(bitcoinBalance, prevBitcoinBalance.current),
+      );
+      setBitcoinProfitVariation(
+        CalculateVariation(profit, prevBitcoinProfit.current),
+      );
       setIsDarkMode(darkMode);
 
       const valuesToStore: storedData = {
@@ -196,45 +222,78 @@ function Home(): JSX.Element {
             name="cog"
             size={35}
             color={textColor.colorTitle}
-            /* style={{
-              transform: [{scale: scaleOnPressValue}],
-            }} */
-
             onPress={toggleModal}
-            /* onPressIn={() => scaleOnPress.start()}
-            onPressOut={() => scaleOnPress.reset()} */
           />
 
           <Text style={[styles.textTitle, {color: textColor.colorTitle}]}>
             Bitcoin Price:
           </Text>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {color: textColor.colorData, transform: [{scale: scaleAnim}]},
-            ]}>
-            ${bitcoinPrice}
-          </Animated.Text>
+          <View style={styles.variationContainer}>
+            <Animated.Text
+              style={[
+                styles.textData,
+                {
+                  color: textColor.colorData,
+                  transform: [{scale: scaleAnim}],
+                  flexShrink: 0,
+                },
+              ]}>
+              ${FormatNumber(bitcoinPrice, 2)}
+            </Animated.Text>
+            <Text
+              style={[
+                styles.variationText,
+                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+              ]}>
+              {FormatNumber(bitcoinPriceVariation, 2)}%
+            </Text>
+          </View>
           <Text style={[styles.textTitle, {color: textColor.colorTitle}]}>
             Bitcoin Balance:
           </Text>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {color: textColor.colorData, transform: [{scale: scaleAnim}]},
-            ]}>
-            ${bitcoinBalance}
-          </Animated.Text>
+          <View style={styles.variationContainer}>
+            <Animated.Text
+              style={[
+                styles.textData,
+                {
+                  color: textColor.colorData,
+                  transform: [{scale: scaleAnim}],
+                  flexShrink: 0,
+                },
+              ]}>
+              ${FormatNumber(bitcoinBalance, 2)}
+            </Animated.Text>
+            <Text
+              style={[
+                styles.variationText,
+                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+              ]}>
+              {FormatNumber(bitcoinBalanceVariation, 2)}%
+            </Text>
+          </View>
           <Text style={[styles.textTitle, {color: textColor.colorTitle}]}>
             Profit:
           </Text>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {color: textColor.colorData, transform: [{scale: scaleAnim}]},
-            ]}>
-            ${investedAmount}
-          </Animated.Text>
+          <View style={styles.variationContainer}>
+            <Animated.Text
+              style={[
+                styles.textData,
+                {
+                  color: textColor.colorData,
+                  transform: [{scale: scaleAnim}],
+                  flexShrink: 0,
+                },
+              ]}>
+              ${FormatNumber(bitcoinProfit, 2)}
+            </Animated.Text>
+            <Text
+              style={[
+                styles.variationText,
+                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+              ]}>
+              {FormatNumber(bitcoinProfitVariation, 2)}%
+            </Text>
+          </View>
 
           <AnimatedIcon
             name="reload"
@@ -300,6 +359,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 5,
     fontSize: 18,
+  },
+  variationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  variationText: {
+    paddingLeft: 5,
+    flexShrink: 1,
   },
 });
 
