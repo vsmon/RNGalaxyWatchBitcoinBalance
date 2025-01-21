@@ -235,18 +235,17 @@ function Home(): JSX.Element {
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  flexShrink: 0,
                 },
               ]}>
-              ${FormatNumber(bitcoinPrice, 2)}
+              ${FormatNumber(bitcoinPrice, 2)}{' '}
+              <Text
+                style={[
+                  styles.variationText,
+                  {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+                ]}>
+                {FormatNumber(bitcoinPriceVariation, 2)}%
+              </Text>
             </Animated.Text>
-            <Text
-              style={[
-                styles.variationText,
-                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
-              ]}>
-              {FormatNumber(bitcoinPriceVariation, 2)}%
-            </Text>
           </View>
           <Text style={[styles.textTitle, {color: textColor.colorTitle}]}>
             Bitcoin Balance:
@@ -258,18 +257,17 @@ function Home(): JSX.Element {
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  flexShrink: 0,
                 },
               ]}>
-              ${FormatNumber(bitcoinBalance, 2)}
+              ${FormatNumber(bitcoinBalance, 2)}{' '}
+              <Text
+                style={[
+                  styles.variationText,
+                  {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+                ]}>
+                {FormatNumber(bitcoinBalanceVariation, 2)}%
+              </Text>
             </Animated.Text>
-            <Text
-              style={[
-                styles.variationText,
-                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
-              ]}>
-              {FormatNumber(bitcoinBalanceVariation, 2)}%
-            </Text>
           </View>
           <Text style={[styles.textTitle, {color: textColor.colorTitle}]}>
             Profit:
@@ -281,18 +279,17 @@ function Home(): JSX.Element {
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  flexShrink: 0,
                 },
               ]}>
-              ${FormatNumber(bitcoinProfit, 2)}
+              ${FormatNumber(bitcoinProfit, 2)}{' '}
+              <Text
+                style={[
+                  styles.variationText,
+                  {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
+                ]}>
+                {FormatNumber(bitcoinProfitVariation, 2)}%
+              </Text>
             </Animated.Text>
-            <Text
-              style={[
-                styles.variationText,
-                {color: bitcoinProfitVariation < 0 ? 'red' : 'green'},
-              ]}>
-              {FormatNumber(bitcoinProfitVariation, 2)}%
-            </Text>
           </View>
 
           <AnimatedIcon
@@ -367,7 +364,7 @@ const styles = StyleSheet.create({
   },
   variationText: {
     paddingLeft: 5,
-    flexShrink: 1,
+    fontSize: 12,
   },
 });
 
