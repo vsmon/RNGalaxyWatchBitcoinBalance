@@ -55,7 +55,8 @@ async function getBitcoinAmountBlockCypher(address: string): Promise<number> {
     }
     const data = await response.json();
     const sumBalance = data.reduce(
-      (curr: any, accum: any) => (accum.balance += curr.balance),
+      (accum: any, curr: any) => (accum += curr.balance ? curr.balance : 0),
+      0,
     );
     const balanceSatoshis = sumBalance;
     const balanceBitcoin = sumBalance / 100000000; // 1 Bitcoin = 100,000,000 Satoshis;;
