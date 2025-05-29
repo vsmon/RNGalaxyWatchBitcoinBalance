@@ -39,7 +39,7 @@ function Home(): JSX.Element {
   const scaleOnPressValue = useRef(new Animated.Value(1)).current;
   const spinValue = useRef(new Animated.Value(0)).current;
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
   const [bitcoinPrice, setBitcoinPrice] = useState<number>(0);
   const [bitcoinBalance, setBitcoinBalance] = useState<number>(0);

@@ -36,7 +36,7 @@ export default function ModalSettings({
   const [bitcoinAddress, setBitcoinAddress] = useState<string>('');
   const [investedAmount, setInvestedAmount] = useState<string>('0');
   const [currency, setCurrency] = useState<string>('BRL');
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [saved, setSaved] = useState<boolean>(false);
 
   async function handleData() {
