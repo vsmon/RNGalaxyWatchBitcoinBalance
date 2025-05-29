@@ -15,10 +15,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {getStoredData, storeData} from '../../Database';
 import tostMessage from '../../Utils/ToastMessage';
 import {storedParams} from '../../types';
+import CustomScrollView from '../CustomScrollView';
 
 type ModalSettingsProps = {
   visible: boolean;
-  backgroundStyle: any;
+  backgroundStyle: {backgroundColor: string};
   onClose: any;
   darkMode: boolean;
 };
@@ -36,10 +37,7 @@ export default function ModalSettings({
   const [investedAmount, setInvestedAmount] = useState<string>('0');
   const [currency, setCurrency] = useState<string>('BRL');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    handleData();
-  }, [visible]);
+  const [saved, setSaved] = useState<boolean>(false);
 
   async function handleData() {
     const storedData: storedParams = await getStoredData('bitcoin-params');
@@ -57,11 +55,43 @@ export default function ModalSettings({
     setIsDarkMode(darkMode);
   }
 
-  const textColor = {
-    colorTitle: darkMode ? '#fff9' : '#000000',
-    colorData: darkMode ? '#000' : '#FFF9',
-    backgroundColor: darkMode ? '#FFF9' : '#000',
-  };
+  const [textColor, setTextColor] = useState<{
+    colorTitle: string;
+    colorData: string;
+    backgroundColor: string;
+  }>({
+    colorTitle: darkMode ? '#fff' : '#000000',
+    colorData: darkMode ? '#000' : '#FFF',
+    backgroundColor: darkMode ? '#FFF' : '#000',
+  });
+
+  const [darkModeBackgroundColor, setDarkModeBackgroundColor] = useState<{
+    backgroundColor: string;
+  }>(backgroundStyle);
+
+  /* const textColor = {
+    colorTitle: darkMode ? '#fff' : '#000000',
+    colorData: darkMode ? '#000' : '#FFF',
+    backgroundColor: darkMode ? '#FFF' : '#000',
+  }; */
+
+  useEffect(() => {
+    handleData();
+  }, [visible]);
+
+  useEffect(() => {
+    setTextColor({
+      colorTitle: isDarkMode ? '#fff' : '#000000',
+      colorData: isDarkMode ? '#000' : '#FFF',
+      backgroundColor: isDarkMode ? '#FFF' : '#000',
+    });
+    setDarkModeBackgroundColor({
+      backgroundColor: isDarkMode ? '#000' : '#FFF',
+    });
+    console.log('darkMode==========', isDarkMode);
+    console.log('backgroundStyle=======', darkModeBackgroundColor);
+    console.log('=======================================================');
+  }, [isDarkMode]);
 
   return (
     <Modal
@@ -75,15 +105,22 @@ export default function ModalSettings({
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#000',
+          flexDirection: 'row',
         }}>
-        <View style={[styles.modalContainer, backgroundStyle]}>
+        <View style={[styles.modalContainer, darkModeBackgroundColor]}>
           <MaterialCommunityIcons
             name="close-circle"
             color={textColor.colorTitle}
             size={42}
             onPress={onClose}
           />
-          <ScrollView>
+          <CustomScrollView
+            style={{}}
+            indicatorColor={textColor.backgroundColor}
+            //scrollEnabled={true}
+            //showsVerticalScrollIndicator={true}
+            //</View>indicatorStyle="white"
+          >
             <View>
               <View
                 style={{
@@ -95,7 +132,7 @@ export default function ModalSettings({
                 </Text>
                 <MaterialCommunityIcons
                   name="information-outline"
-                  color={'#FFF8'}
+                  color={textColor.colorTitle}
                   size={15}
                   onPress={() => {
                     tostMessage('Type bitcoin wallet separate by comma');
@@ -111,7 +148,7 @@ export default function ModalSettings({
                   },
                 ]}
                 placeholder="Bitcoin addresses..."
-                //placeholderTextColor="#000"
+                placeholderTextColor={textColor.colorData}
                 value={bitcoinAddress}
                 onChangeText={text => setBitcoinAddress(text)}
                 autoCapitalize="none"
@@ -128,7 +165,7 @@ export default function ModalSettings({
                   },
                 ]}
                 placeholder="Invested Amount..."
-                //placeholderTextColor="#000"
+                placeholderTextColor={textColor.colorData}
                 value={investedAmount}
                 onChangeText={text => setInvestedAmount(text)}
                 autoCapitalize="none"
@@ -140,7 +177,7 @@ export default function ModalSettings({
                 </Text>
                 <MaterialCommunityIcons
                   name="information-outline"
-                  color={'#FFF8'}
+                  color={textColor.colorTitle}
                   size={15}
                   onPress={() => {
                     tostMessage('Type currency like "USD"');
@@ -156,7 +193,7 @@ export default function ModalSettings({
                   },
                 ]}
                 placeholder="Currency..."
-                //placeholderTextColor="#000"
+                placeholderTextColor={textColor.colorData}
                 value={currency}
                 onChangeText={text => setCurrency(text)}
                 autoCapitalize="none"
@@ -211,8 +248,22 @@ export default function ModalSettings({
                 }}
               />
             </View>
-          </ScrollView>
+          </CustomScrollView>
         </View>
+        {/* <View
+          style={{
+            flex: 1,
+            backgroundColor: 'red',
+            height: 150,
+            width: 100,
+            position: 'absolute',
+            left: Dimensions.get('screen').width - 100,
+            //borderRadius: 10,
+            borderStartWidth: 30,
+            borderStartStartRadius: -30,
+            borderTopEndRadius: 50,
+            borderBottomEndRadius: 50,
+          }}></View> */}
       </View>
     </Modal>
   );
