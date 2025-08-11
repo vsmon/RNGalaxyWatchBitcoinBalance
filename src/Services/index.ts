@@ -35,6 +35,7 @@ async function getBitcoinAmountBlockChain(address: string): Promise<number> {
     if (response.status !== 200) {
       throw new Error('Error to get wallet values!');
     }
+
     const data = await response.json();
     const balanceSatoshis = data.final_balance;
     const balanceBitcoin = balanceSatoshis / 100000000; // 1 Bitcoin = 100,000,000 Satoshis
@@ -53,11 +54,16 @@ async function getBitcoinAmountBlockCypher(address: string): Promise<number> {
     if (response.status !== 200) {
       throw new Error('Error to get wallet values!');
     }
+
     const data = await response.json();
-    const sumBalance = data.reduce(
-      (accum: any, curr: any) => (accum += curr.balance ? curr.balance : 0),
-      0,
-    );
+
+    const sumBalance = Array.isArray(data)
+      ? data.reduce(
+          (accum: any, curr: any) => (accum += curr.balance ? curr.balance : 0),
+          0,
+        )
+      : data.balance;
+
     const balanceSatoshis = sumBalance;
     const balanceBitcoin = sumBalance / 100000000; // 1 Bitcoin = 100,000,000 Satoshis;;
     return balanceBitcoin;

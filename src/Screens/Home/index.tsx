@@ -210,7 +210,12 @@ function Home(): JSX.Element {
 
   console.log('fontScale==========', fontScale);
   return (
-    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
       <ModalSettings
         visible={isVisibleModal}
         backgroundStyle={backgroundStyle}
@@ -222,141 +227,30 @@ function Home(): JSX.Element {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleReload} />
         }
-        contentContainerStyle={[styles.scrollview, {}]}
+        contentContainerStyle={[
+          styles.scrollview,
+          {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#252323',
+          },
+        ]}
         style={backgroundStyle}>
-        <AnimatedIcon
-          name="cog"
-          size={35 * fontScale}
-          color={textColor.colorTitle}
-          onPress={toggleModal}
-        />
-
-        <Text
+        <View
           style={[
-            styles.textTitle,
+            backgroundStyle,
             {
-              color: textColor.colorTitle,
-              fontSize: styles.textTitle.fontSize * fontScale,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: screenWidth,
+              height: screenWidth,
+              borderRadius: screenWidth,
+              borderWidth: 1.2,
+              borderColor: '#000',
+              overflow: 'hidden',
             },
           ]}>
-          Bitcoin Price:
-        </Text>
-        <View style={styles.variationContainer}>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {
-                color: textColor.colorData,
-                transform: [{scale: scaleAnim}],
-                fontSize: styles.textData.fontSize * fontScale,
-              },
-            ]}>
-            ${FormatNumber(bitcoinPrice, 2)}{' '}
-            <Text
-              style={[
-                styles.variationText,
-                {
-                  color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                  fontSize: styles.variationText.fontSize * fontScale,
-                },
-              ]}>
-              {FormatNumber(bitcoinPriceVariation, 2)}%
-            </Text>
-          </Animated.Text>
-        </View>
-        <Text
-          style={[
-            styles.textTitle,
-            {
-              color: textColor.colorTitle,
-              fontSize: styles.textTitle.fontSize * fontScale,
-            },
-          ]}>
-          Bitcoin Balance:
-        </Text>
-        <View style={styles.variationContainer}>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {
-                color: textColor.colorData,
-                transform: [{scale: scaleAnim}],
-                fontSize: styles.textData.fontSize * fontScale,
-              },
-            ]}>
-            ${FormatNumber(bitcoinBalance, 2)}{' '}
-            <Text
-              style={[
-                styles.variationText,
-                {
-                  color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                  fontSize: styles.variationText.fontSize * fontScale,
-                },
-              ]}>
-              {FormatNumber(bitcoinBalanceVariation, 2)}%
-            </Text>
-          </Animated.Text>
-        </View>
-        <Text
-          style={[
-            styles.textTitle,
-            {
-              color: textColor.colorTitle,
-              fontSize: styles.textTitle.fontSize * fontScale,
-            },
-          ]}>
-          Profit:
-        </Text>
-        <View style={styles.variationContainer}>
-          <Animated.Text
-            style={[
-              styles.textData,
-              {
-                color: textColor.colorData,
-                transform: [{scale: scaleAnim}],
-                fontSize: styles.textData.fontSize * fontScale,
-              },
-            ]}>
-            ${FormatNumber(bitcoinProfit, 2)}{' '}
-            <Text
-              style={[
-                styles.variationText,
-                {
-                  color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                  fontSize: styles.variationText.fontSize * fontScale,
-                },
-              ]}>
-              {FormatNumber(bitcoinProfitVariation, 2)}%
-            </Text>
-          </Animated.Text>
-        </View>
-
-        <AnimatedIcon
-          name="reload"
-          color="green"
-          size={40 * fontScale}
-          onPress={handleReload}
-          style={{transform: [{rotate: spin}]}}
-          onPressIn={() => spinner.start()}
-        />
-      </CustomScrollView>
-    </SafeAreaView>
-  );
-  return (
-    <View style={styles.container}>
-      <CustomScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleReload} />
-        }
-        contentContainerStyle={[styles.scrollview, {backgroundColor: '#FFF2'}]}
-        style={backgroundStyle}>
-        <ModalSettings
-          visible={isVisibleModal}
-          backgroundStyle={backgroundStyle}
-          onClose={toggleModal}
-          darkMode={isDarkMode}
-        />
-        <View style={[styles.dataContainer, backgroundStyle]}>
           <AnimatedIcon
             name="cog"
             size={35 * fontScale}
@@ -472,17 +366,9 @@ function Home(): JSX.Element {
             style={{transform: [{rotate: spin}]}}
             onPressIn={() => spinner.start()}
           />
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
-          <Text>Rodrigo</Text>
         </View>
       </CustomScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

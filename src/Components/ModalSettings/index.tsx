@@ -104,7 +104,7 @@ export default function ModalSettings({
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#000',
+          backgroundColor: '#201d1d',
           flexDirection: 'row',
         }}>
         <View style={[styles.modalContainer, darkModeBackgroundColor]}>
@@ -116,154 +116,131 @@ export default function ModalSettings({
           />
           <CustomScrollView
             style={{}}
-            indicatorColor={textColor.backgroundColor}
-            //scrollEnabled={true}
-            //showsVerticalScrollIndicator={true}
-            //</View>indicatorStyle="white"
-          >
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
-                  Bitcoin Addresses:
-                </Text>
-                <MaterialCommunityIcons
-                  name="information-outline"
-                  color={textColor.colorTitle}
-                  size={15}
-                  onPress={() => {
-                    tostMessage('Type bitcoin wallet separate by comma');
-                  }}
-                />
-              </View>
-              <TextInput
-                style={[
-                  styles.modalTextInput,
-                  {
-                    color: textColor.colorData,
-                    backgroundColor: textColor.backgroundColor,
-                  },
-                ]}
-                placeholder="Bitcoin addresses..."
-                placeholderTextColor={textColor.colorData}
-                value={bitcoinAddress}
-                onChangeText={text => setBitcoinAddress(text)}
-                autoCapitalize="none"
-              />
+            indicatorColor={textColor.backgroundColor}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
               <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
-                Invested Amount:
+                Bitcoin Addresses:
               </Text>
-              <TextInput
-                style={[
-                  styles.modalTextInput,
-                  {
-                    color: textColor.colorData,
-                    backgroundColor: textColor.backgroundColor,
-                  },
-                ]}
-                placeholder="Invested Amount..."
-                placeholderTextColor={textColor.colorData}
-                value={investedAmount}
-                onChangeText={text => setInvestedAmount(text)}
-                autoCapitalize="none"
-                keyboardType="numbers-and-punctuation"
-              />
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
-                  Currency:
-                </Text>
-                <MaterialCommunityIcons
-                  name="information-outline"
-                  color={textColor.colorTitle}
-                  size={15}
-                  onPress={() => {
-                    tostMessage('Type currency like "USD"');
-                  }}
-                />
-              </View>
-              <TextInput
-                style={[
-                  styles.modalTextInput,
-                  {
-                    color: textColor.colorData,
-                    backgroundColor: textColor.backgroundColor,
-                  },
-                ]}
-                placeholder="Currency..."
-                placeholderTextColor={textColor.colorData}
-                value={currency}
-                onChangeText={text => setCurrency(text)}
-                autoCapitalize="none"
-              />
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                {/* <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
-                Dark Mode:
-              </Text> */}
-                <MaterialCommunityIcons
-                  name="weather-sunny"
-                  size={25}
-                  color={textColor.colorTitle}
-                />
-                <Switch
-                  trackColor={{false: '#3e3e3e', true: '#3e3e3e'}}
-                  thumbColor={isDarkMode ? '#002792' : '#FFFF22'}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={value => setIsDarkMode(value)}
-                  value={isDarkMode}
-                  style={{
-                    alignSelf: 'flex-start',
-                  }}
-                />
-                <MaterialCommunityIcons
-                  name="moon-waning-crescent"
-                  size={25}
-                  color={textColor.colorTitle}
-                />
-              </View>
               <MaterialCommunityIcons
-                name="content-save-all"
-                color="#2194A4"
-                size={42}
-                style={{alignSelf: 'center'}}
+                name="information-outline"
+                color={textColor.colorTitle}
+                size={15}
                 onPress={() => {
-                  const address: string[] = bitcoinAddress.split(',');
-                  storeData('bitcoin-params', {
-                    bitcoinParams: {
-                      address: address,
-                      investedAmount: Number(investedAmount),
-                      currency,
-                      darkMode: isDarkMode,
-                    },
-                  });
-                  tostMessage('Data was stored');
+                  tostMessage('Type bitcoin wallet separate by comma');
                 }}
               />
             </View>
+            <TextInput
+              style={[
+                styles.modalTextInput,
+                {
+                  color: textColor.colorData,
+                  backgroundColor: textColor.backgroundColor,
+                },
+              ]}
+              placeholder="Bitcoin addresses..."
+              placeholderTextColor={textColor.colorData}
+              value={bitcoinAddress}
+              onChangeText={text => setBitcoinAddress(text)}
+              autoCapitalize="none"
+            />
+            <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
+              Invested Amount:
+            </Text>
+            <TextInput
+              style={[
+                styles.modalTextInput,
+                {
+                  color: textColor.colorData,
+                  backgroundColor: textColor.backgroundColor,
+                },
+              ]}
+              placeholder="Invested Amount..."
+              placeholderTextColor={textColor.colorData}
+              value={investedAmount}
+              onChangeText={text => setInvestedAmount(text)}
+              autoCapitalize="none"
+              keyboardType="numbers-and-punctuation"
+            />
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
+                Currency:
+              </Text>
+              <MaterialCommunityIcons
+                name="information-outline"
+                color={textColor.colorTitle}
+                size={15}
+                onPress={() => {
+                  tostMessage('Type currency like "USD"');
+                }}
+              />
+            </View>
+            <TextInput
+              style={[
+                styles.modalTextInput,
+                {
+                  color: textColor.colorData,
+                  backgroundColor: textColor.backgroundColor,
+                },
+              ]}
+              placeholder="Currency..."
+              placeholderTextColor={textColor.colorData}
+              value={currency}
+              onChangeText={text => setCurrency(text)}
+              autoCapitalize="none"
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MaterialCommunityIcons
+                name="weather-sunny"
+                size={25}
+                color={textColor.colorTitle}
+              />
+              <Switch
+                trackColor={{false: '#3e3e3e', true: '#3e3e3e'}}
+                thumbColor={isDarkMode ? '#002792' : '#FFFF22'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={value => setIsDarkMode(value)}
+                value={isDarkMode}
+                style={{
+                  alignSelf: 'flex-start',
+                }}
+              />
+              <MaterialCommunityIcons
+                name="moon-waning-crescent"
+                size={25}
+                color={textColor.colorTitle}
+              />
+            </View>
+            <MaterialCommunityIcons
+              name="content-save-all"
+              color="#2194A4"
+              size={42}
+              style={{alignSelf: 'center'}}
+              onPress={() => {
+                const address: string[] = bitcoinAddress.split(',');
+                storeData('bitcoin-params', {
+                  bitcoinParams: {
+                    address: address,
+                    investedAmount: Number(investedAmount),
+                    currency,
+                    darkMode: isDarkMode,
+                  },
+                });
+                tostMessage('Data was stored');
+              }}
+            />
           </CustomScrollView>
         </View>
-        {/* <View
-          style={{
-            flex: 1,
-            backgroundColor: 'red',
-            height: 150,
-            width: 100,
-            position: 'absolute',
-            left: Dimensions.get('screen').width - 100,
-            //borderRadius: 10,
-            borderStartWidth: 30,
-            borderStartStartRadius: -30,
-            borderTopEndRadius: 50,
-            borderBottomEndRadius: 50,
-          }}></View> */}
       </View>
     </Modal>
   );
@@ -279,11 +256,12 @@ const styles = StyleSheet.create({
     borderWidth: 1.2,
     borderColor: '#000',
     backgroundColor: '#574c4c',
+    overflow: 'hidden',
   },
   modalTextInput: {
     padding: 5,
     height: 40,
-    width: screenWidth - 30,
+    width: screenWidth * 0.8,
     borderRadius: 20,
     marginBottom: 5,
     fontSize: 18,

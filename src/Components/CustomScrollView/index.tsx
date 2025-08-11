@@ -67,7 +67,14 @@ export default function CustomScrollView({
   };
 
   return (
-    <View style={[{flex: 1, position: 'relative'}, style]}>
+    <View
+      style={[
+        {
+          flex: 1,
+          position: 'relative',
+        },
+        style,
+      ]}>
       <ScrollView
         refreshControl={refreshControl}
         contentContainerStyle={contentContainerStyle}
