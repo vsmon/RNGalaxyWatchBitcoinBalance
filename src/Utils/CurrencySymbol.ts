@@ -1,4 +1,6 @@
-function getCurrencySymbol(locale, currency) {
+export default function getCurrencySymbol(currency: string): string {
+  console.log(currency);
+  const locale = Intl.DateTimeFormat().resolvedOptions().locale;
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
@@ -10,9 +12,3 @@ function getCurrencySymbol(locale, currency) {
   // Garantir que não seja undefined
   return symbolPart ? symbolPart.value : '';
 }
-
-// Exemplos de uso
-console.log(getCurrencySymbol('en-US', 'USD')); // $
-console.log(getCurrencySymbol('en-US', 'BRL')); // R$
-console.log(getCurrencySymbol('en-US', 'GBP')); // £
-console.log(Intl.DateTimeFormat().resolvedOptions().locale);

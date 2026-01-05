@@ -1,4 +1,10 @@
+import {storedParams} from '../types';
 import toastMessage from '../Utils/ToastMessage';
+import {
+  watchEvents,
+  sendMessage,
+  WearConnectivity,
+} from 'react-native-wear-connectivity';
 
 async function getBitcoinPrice(currency: string): Promise<number> {
   const URL = `https://api.coinbase.com/v2/prices/BTC-${currency}/buy`;
@@ -81,9 +87,40 @@ async function getBalances(addresses: string[]): Promise<number[]> {
   return balances;
 }
 
+function sendMessageToWatch(message: storedParams) {
+  if (message) {
+    sendMessage(
+      {data: message},
+      reply => {
+        console.log(reply); // {"text": "Hello React Native app!"}
+      },
+      error => {
+        console.log('sendMessage error', error);
+        //toastMessage(`Error sending message: ${error}`);
+      },
+    );
+  }
+}
+
+function receiveMessageFromMobile() {
+  const unsubscribe = watchEvents.on('message', (message: string) => {
+    //const [message, reply] = args;
+    console.log('received message from watch', message);
+    //toastMessage(message);
+    /*
+     * reply is not supported on Android
+     * if (typeof reply === 'function') reply({ text: 'Thanks watch!' });
+     */
+  });
+
+  return unsubscribe;
+}
+
 export {
   getBitcoinPrice,
   getBitcoinAmountBlockChain,
   getBitcoinAmountBlockCypher,
   getBalances,
+  sendMessageToWatch,
+  receiveMessageFromMobile,
 };

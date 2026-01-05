@@ -11,18 +11,30 @@ import {
   Easing,
   ScaledSize,
   SafeAreaView,
+  Platform,
+  Button,
+  PermissionsAndroid,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {getStoredData, storeData} from '../../Database/index';
-import {getBitcoinAmountBlockCypher, getBitcoinPrice} from '../../Services';
+import {
+  getBitcoinAmountBlockCypher,
+  getBitcoinPrice,
+  receiveMessageFromMobile,
+  sendMessageToWatch,
+} from '../../Services';
 import ModalSettings from '../../Components/ModalSettings';
 
 import {storedData, storedParams} from '../../types';
 import FormatNumber from '../../Utils/FormatNumberToLocaleString';
 import CalculateVariation from '../../Utils/CalculateVariation';
 import CustomScrollView from '../../Components/CustomScrollView';
+import {watchEvents, WearConnectivity} from 'react-native-wear-connectivity';
+import toastMessage from '../../Utils/ToastMessage';
+import isWatch from '../../Utils/IsWatch';
+import getCurrencySymbol from '../../Utils/CurrencySymbol';
 
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
@@ -44,6 +56,7 @@ function Home(): JSX.Element {
   const [bitcoinPrice, setBitcoinPrice] = useState<number>(0);
   const [bitcoinBalance, setBitcoinBalance] = useState<number>(0);
   const [bitcoinProfit, setBitcoinProfit] = useState<number>(0);
+  const [currencySymbol, setCurrencySymbol] = useState<string>('');
 
   const [bitcoinPriceVariation, setBitcoinPriceVariation] = useState(0);
   const [bitcoinBalanceVariation, setBitcoinBalanceVariation] = useState(0);
@@ -104,6 +117,13 @@ function Home(): JSX.Element {
 
   async function getBitcoinData() {
     const bitcoinData: storedData = await getStoredData('bitcoin-data');
+    const storedParams: storedParams = await getStoredData('bitcoin-params');
+    if (storedParams.bitcoinParams?.currency) {
+      const symbol: string = getCurrencySymbol(
+        storedParams.bitcoinParams?.currency,
+      );
+      setCurrencySymbol(symbol);
+    }
     if (bitcoinData.bitcoinData) {
       setBitcoinPrice(bitcoinData.bitcoinData.bitcoinPrice);
       setBitcoinBalance(bitcoinData.bitcoinData.bitcoinBalance);
@@ -134,6 +154,8 @@ function Home(): JSX.Element {
 
       const profit: number = bitcoinBalance - investedAmount;
 
+      const symbol: string = getCurrencySymbol(currency);
+
       /*const bitcoinAmount: number[] = await getBalances(address);
        const bitcoinBalance: number = bitcoinAmount.reduce((prev, accum) => {
         accum += prev;
@@ -143,6 +165,7 @@ function Home(): JSX.Element {
       setBitcoinPrice(bitcoinPrice);
       setBitcoinBalance(bitcoinBalance);
       setBitcoinProfit(profit);
+      setCurrencySymbol(symbol);
 
       setBitcoinPriceVariation(
         CalculateVariation(bitcoinPrice, prevBitcoinPrice.current),
@@ -207,6 +230,45 @@ function Home(): JSX.Element {
     scale.reset();
     spinner.reset();
   }, [bitcoinBalance]);
+
+  useEffect(() => {
+    /* if (isWatch()) { */
+    const unsubscribe = watchEvents.on('message', message => {
+      console.log(
+        'MESSAGE FROM SYNC================',
+        JSON.stringify(message.data, null, 2),
+      );
+      //toastMessage('Message received from mobile');
+      storeData('bitcoin-params', message.data)
+        .then(success => {
+          if (success) {
+            console.log('bitcoin-params salvo com sucesso');
+          }
+        })
+        .catch(e => {
+          console.log('Erro ao salvar bitcoin-params', e);
+        });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+    /* } */
+  }, []);
+
+  async function requestBluetoothPermissions() {
+    if (Platform.OS === 'android' && Platform.Version >= 31) {
+      const granted = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+      ]);
+
+      console.log('Bluetooth permissions:', granted);
+    }
+  }
+  useEffect(() => {
+    requestBluetoothPermissions();
+  }, []);
 
   console.log('fontScale==========', fontScale);
   return (
@@ -278,7 +340,7 @@ function Home(): JSX.Element {
                   fontSize: styles.textData.fontSize * fontScale,
                 },
               ]}>
-              ${FormatNumber(bitcoinPrice, 2)}{' '}
+              {currencySymbol} {FormatNumber(bitcoinPrice, 2)}{' '}
               <Text
                 style={[
                   styles.variationText,
@@ -311,7 +373,7 @@ function Home(): JSX.Element {
                   fontSize: styles.textData.fontSize * fontScale,
                 },
               ]}>
-              ${FormatNumber(bitcoinBalance, 2)}{' '}
+              {currencySymbol} {FormatNumber(bitcoinBalance, 2)}{' '}
               <Text
                 style={[
                   styles.variationText,
@@ -344,7 +406,7 @@ function Home(): JSX.Element {
                   fontSize: styles.textData.fontSize * fontScale,
                 },
               ]}>
-              ${FormatNumber(bitcoinProfit, 2)}{' '}
+              {currencySymbol} {FormatNumber(bitcoinProfit, 2)}{' '}
               <Text
                 style={[
                   styles.variationText,
@@ -358,6 +420,8 @@ function Home(): JSX.Element {
             </Animated.Text>
           </View>
 
+          {/* <Button title="Receive" onPress={receiveMessageFromMobile} />
+          <Button title="Send" onPress={sendMessageToWatch({})} /> */}
           <AnimatedIcon
             name="reload"
             color="green"

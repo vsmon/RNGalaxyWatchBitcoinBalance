@@ -5618,6 +5618,11 @@ react-native-vector-icons@^10.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
+react-native-wear-connectivity@^0.1.17:
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/react-native-wear-connectivity/-/react-native-wear-connectivity-0.1.17.tgz#29dfae47d9618c36f9792aa0692534d034e168c9"
+  integrity sha512-yBl5cDoRBPutsosMbGbPaX9Puq9ygFG8w/CNflZ7XFu6wvqzbpYRm6ksAhWHPqn6X+xfM3dVXEh11jjqEhYgAQ==
+
 react-native@*, react-native@0.76.5:
   version "0.76.5"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.76.5.tgz#3ce43d3c31f46cfd98e56ef2dfc70866c04ad185"

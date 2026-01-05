@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- USED WEAR CONNECTIVITY -->
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+
+  <!-- Bluetooth (Android 12+) -->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+
+  <application>
+    <!-- ONLY MOBILE Android 14+ -->
+    <service
+      android:name="com.wearconnectivity.WearConnectivityTask"
+      android:exported="false"
+      android:foregroundServiceType="dataSync|connectedDevice"
+      android:permission="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+  </application>
+</manifest>

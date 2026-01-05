@@ -82,8 +82,24 @@ android {
         applicationId "br.com.rodrigofm.btcbalance"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.7"
+        versionCode 9
+        versionName "1.8"
+    }
+    flavorDimensions "device"
+    productFlavors {
+        mobile {
+            dimension "device"
+            //applicationIdSuffix ".mobile"
+            versionCode 9
+            versionName "1.8"
+        }
+        wear {
+            dimension "device"
+            //applicationIdSuffix ".wear"
+            versionCode 1009
+            versionName "1.8"
+        }
+
     }
     signingConfigs {
         debug {

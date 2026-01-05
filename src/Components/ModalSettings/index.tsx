@@ -16,6 +16,8 @@ import {getStoredData, storeData} from '../../Database';
 import tostMessage from '../../Utils/ToastMessage';
 import {storedParams} from '../../types';
 import CustomScrollView from '../CustomScrollView';
+import isWatch from '../../Utils/IsWatch';
+import {sendMessageToWatch} from '../../Services';
 
 type ModalSettingsProps = {
   visible: boolean;
@@ -48,6 +50,10 @@ export default function ModalSettings({
 
     const {address, investedAmount, currency, darkMode} =
       storedData.bitcoinParams;
+
+    if (isWatch()) {
+      console.log('Bitcoin Params Wear OS========', storedData.bitcoinParams);
+    }
 
     setBitcoinAddress(address && address.join(','));
     setInvestedAmount(investedAmount.toString());
@@ -228,15 +234,21 @@ export default function ModalSettings({
               style={{alignSelf: 'center'}}
               onPress={() => {
                 const address: string[] = bitcoinAddress.split(',');
-                storeData('bitcoin-params', {
+                const bitcoinParams = {
                   bitcoinParams: {
                     address: address,
                     investedAmount: Number(investedAmount),
                     currency,
                     darkMode: isDarkMode,
                   },
-                });
-                tostMessage('Data was stored');
+                };
+                storeData('bitcoin-params', bitcoinParams);
+                sendMessageToWatch(bitcoinParams);
+                if (!isWatch()) {
+                  tostMessage('Data was stored and sent to watch');
+                } else {
+                  tostMessage('Data was stored and sent to mobile');
+                }
               }}
             />
           </CustomScrollView>
