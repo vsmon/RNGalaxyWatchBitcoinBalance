@@ -35,7 +35,7 @@ async function getBitcoinPrice(currency: string): Promise<number> {
 }
 
 async function getBitcoinAmountBlockChain(address: string): Promise<number> {
-  const URL = `https://blockchain.info/rawaddr/${address}`;
+  const URL = `https://blockchain.info/multiaddr?active=${address}&n=0&format=json`; /* Address Separate by | (pipeline) */
   try {
     const response = await fetch(URL);
     if (response.status !== 200) {
@@ -43,8 +43,20 @@ async function getBitcoinAmountBlockChain(address: string): Promise<number> {
     }
 
     const data = await response.json();
-    const balanceSatoshis = data.final_balance;
-    const balanceBitcoin = balanceSatoshis / 100000000; // 1 Bitcoin = 100,000,000 Satoshis
+    console.log(
+      'DATA blockchain.info data.addresses================',
+      data.addresses,
+    );
+    const sumBalance = Array.isArray(data.addresses)
+      ? data.addresses.reduce(
+          (accum: number, curr: any) =>
+            (accum += curr.final_balance ? curr.final_balance : 0),
+          0,
+        )
+      : data.balance;
+
+    const balanceSatoshis = sumBalance;
+    const balanceBitcoin = sumBalance / 100000000; // 1 Bitcoin = 100,000,000 Satoshis;;
     return balanceBitcoin;
   } catch (error) {
     console.log('Ocorreu um erro ao obter os dados da API', error);

@@ -24,6 +24,7 @@ import {
   getBitcoinPrice,
   receiveMessageFromMobile,
   sendMessageToWatch,
+  getBitcoinAmountBlockChain,
 } from '../../Services';
 import ModalSettings from '../../Components/ModalSettings';
 
@@ -146,8 +147,8 @@ function Home(): JSX.Element {
 
       const bitcoinPrice: number = await getBitcoinPrice(currency);
 
-      const bitcoinAmount: number = await getBitcoinAmountBlockCypher(
-        address.join(';'),
+      const bitcoinAmount: number = await getBitcoinAmountBlockChain(
+        address.join('|'),
       );
 
       const bitcoinBalance: number = bitcoinAmount * bitcoinPrice;
