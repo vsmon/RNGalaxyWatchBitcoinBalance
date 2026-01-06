@@ -1,6 +1,6 @@
 import {ToastAndroid} from 'react-native';
 
-export default function tostMessage(message: string) {
+export default function toastMessage(message: string) {
   ToastAndroid.showWithGravityAndOffset(
     message,
     ToastAndroid.LONG,

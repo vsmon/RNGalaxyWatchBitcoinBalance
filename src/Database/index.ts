@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import tostMessage from '../Utils/ToastMessage';
+import toastMessage from '../Utils/ToastMessage';
 import {storedData, storedParams} from '../types';
 
 async function storeData(
@@ -13,7 +13,7 @@ async function storeData(
   } catch (e) {
     // saving error
     console.log('Ocorreu um erro ao salvar os dados', e);
-    tostMessage(`Não foi possível salvar os dados!: ${e}`);
+    toastMessage(`Não foi possível salvar os dados!: ${e}`);
     return false;
   }
 }

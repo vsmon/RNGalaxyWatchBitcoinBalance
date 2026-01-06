@@ -90,13 +90,13 @@ android {
         mobile {
             dimension "device"
             //applicationIdSuffix ".mobile"
-            versionCode 9
-            versionName "1.8"
+            versionCode 11
+            versionName "1.10"
         }
         wear {
             dimension "device"
             //applicationIdSuffix ".wear"
-            versionCode 1009
+            versionCode 10010
             versionName "1.8"
         }
 

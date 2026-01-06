@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getStoredData, storeData} from '../../Database';
-import tostMessage from '../../Utils/ToastMessage';
+import toastMessage from '../../Utils/ToastMessage';
 import {storedParams} from '../../types';
 import CustomScrollView from '../CustomScrollView';
 import isWatch from '../../Utils/IsWatch';
@@ -83,6 +83,13 @@ export default function ModalSettings({
 
   useEffect(() => {
     handleData();
+    if (visible) {
+      if (isWatch()) {
+        toastMessage('Saving will synchronize data with your mobile.');
+      } else {
+        toastMessage('Saving will synchronize data with your watch.');
+      }
+    }
   }, [visible]);
 
   useEffect(() => {
@@ -136,7 +143,7 @@ export default function ModalSettings({
                 color={textColor.colorTitle}
                 size={15}
                 onPress={() => {
-                  tostMessage('Type bitcoin wallet separate by comma');
+                  toastMessage('Type bitcoin wallet separate by comma');
                 }}
               />
             </View>
@@ -181,7 +188,7 @@ export default function ModalSettings({
                 color={textColor.colorTitle}
                 size={15}
                 onPress={() => {
-                  tostMessage('Type currency like "USD"');
+                  toastMessage('Type currency like "USD"');
                 }}
               />
             </View>
@@ -245,9 +252,9 @@ export default function ModalSettings({
                 storeData('bitcoin-params', bitcoinParams);
                 sendMessageToWatch(bitcoinParams);
                 if (!isWatch()) {
-                  tostMessage('Data was stored and sent to watch');
+                  toastMessage('Data was stored and sent to watch');
                 } else {
-                  tostMessage('Data was stored and sent to mobile');
+                  toastMessage('Data was stored and sent to mobile');
                 }
               }}
             />

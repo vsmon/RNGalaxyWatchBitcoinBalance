@@ -239,11 +239,11 @@ function Home(): JSX.Element {
         'MESSAGE FROM SYNC================',
         JSON.stringify(message.data, null, 2),
       );
-      //toastMessage('Message received from mobile');
       storeData('bitcoin-params', message.data)
         .then(success => {
           if (success) {
             console.log('bitcoin-params salvo com sucesso');
+            toastMessage('Data has been synchronized!');
           }
         })
         .catch(e => {
