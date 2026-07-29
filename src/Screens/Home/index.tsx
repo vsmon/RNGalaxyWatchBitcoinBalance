@@ -1,7 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
   RefreshControl,
-  ScrollView,
   StyleSheet,
   Text,
   Animated,
@@ -9,11 +8,10 @@ import {
   AppState,
   Dimensions,
   Easing,
-  ScaledSize,
   SafeAreaView,
   Platform,
-  Button,
   PermissionsAndroid,
+  ScrollView
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -39,7 +37,6 @@ import getCurrencySymbol from '../../Utils/CurrencySymbol';
 
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;
-const fontScale = Dimensions.get('window').fontScale;
 
 type Home = {
   darkMode: boolean;
@@ -271,7 +268,6 @@ function Home(): JSX.Element {
     requestBluetoothPermissions();
   }, []);
 
-  console.log('fontScale==========', fontScale);
   return (
     <SafeAreaView
       style={{
@@ -285,15 +281,15 @@ function Home(): JSX.Element {
         onClose={toggleModal}
         darkMode={isDarkMode}
       />
-      <CustomScrollView
-        indicatorColor={textColor.colorTitle}
+      <ScrollView
+        //indicatorColor={textColor.colorTitle}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleReload} />
         }
         contentContainerStyle={[
           styles.scrollview,
           {
-            flex: 1,
+            flexGrow: 1,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#252323',
@@ -306,8 +302,8 @@ function Home(): JSX.Element {
             {
               alignItems: 'center',
               justifyContent: 'center',
-              width: screenWidth,
-              height: screenWidth,
+              /* width: screenWidth,
+              height: screenWidth, */
               borderRadius: screenWidth,
               borderWidth: 1.2,
               borderColor: '#000',
@@ -316,38 +312,41 @@ function Home(): JSX.Element {
           ]}>
           <AnimatedIcon
             name="cog"
-            size={35 * fontScale}
+            size={35}
             color={textColor.colorTitle}
             onPress={toggleModal}
           />
 
           <Text
+            allowFontScaling
             style={[
               styles.textTitle,
               {
                 color: textColor.colorTitle,
-                fontSize: styles.textTitle.fontSize * fontScale,
+                fontSize: styles.textTitle.fontSize,
               },
             ]}>
             Bitcoin Price:
           </Text>
           <View style={styles.variationContainer}>
             <Animated.Text
+              allowFontScaling
               style={[
                 styles.textData,
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  fontSize: styles.textData.fontSize * fontScale,
+                  fontSize: styles.textData.fontSize,
                 },
               ]}>
               {currencySymbol} {FormatNumber(bitcoinPrice, 2)}{' '}
               <Text
+                allowFontScaling
                 style={[
                   styles.variationText,
                   {
                     color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                    fontSize: styles.variationText.fontSize * fontScale,
+                    fontSize: styles.variationText.fontSize,
                   },
                 ]}>
                 {FormatNumber(bitcoinPriceVariation, 2)}%
@@ -355,32 +354,35 @@ function Home(): JSX.Element {
             </Animated.Text>
           </View>
           <Text
+            allowFontScaling
             style={[
               styles.textTitle,
               {
                 color: textColor.colorTitle,
-                fontSize: styles.textTitle.fontSize * fontScale,
+                fontSize: styles.textTitle.fontSize,
               },
             ]}>
             Bitcoin Balance:
           </Text>
           <View style={styles.variationContainer}>
             <Animated.Text
+              allowFontScaling
               style={[
                 styles.textData,
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  fontSize: styles.textData.fontSize * fontScale,
+                  fontSize: styles.textData.fontSize,
                 },
               ]}>
               {currencySymbol} {FormatNumber(bitcoinBalance, 2)}{' '}
               <Text
+                allowFontScaling
                 style={[
                   styles.variationText,
                   {
                     color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                    fontSize: styles.variationText.fontSize * fontScale,
+                    fontSize: styles.variationText.fontSize,
                   },
                 ]}>
                 {FormatNumber(bitcoinBalanceVariation, 2)}%
@@ -388,32 +390,35 @@ function Home(): JSX.Element {
             </Animated.Text>
           </View>
           <Text
+            allowFontScaling
             style={[
               styles.textTitle,
               {
                 color: textColor.colorTitle,
-                fontSize: styles.textTitle.fontSize * fontScale,
+                fontSize: styles.textTitle.fontSize,
               },
             ]}>
             Profit:
           </Text>
           <View style={styles.variationContainer}>
             <Animated.Text
+              allowFontScaling
               style={[
                 styles.textData,
                 {
                   color: textColor.colorData,
                   transform: [{scale: scaleAnim}],
-                  fontSize: styles.textData.fontSize * fontScale,
+                  fontSize: styles.textData.fontSize,
                 },
               ]}>
               {currencySymbol} {FormatNumber(bitcoinProfit, 2)}{' '}
               <Text
+                allowFontScaling
                 style={[
                   styles.variationText,
                   {
                     color: bitcoinProfitVariation < 0 ? 'red' : 'green',
-                    fontSize: styles.variationText.fontSize * fontScale,
+                    fontSize: styles.variationText.fontSize,
                   },
                 ]}>
                 {FormatNumber(bitcoinProfitVariation, 2)}%
@@ -426,13 +431,13 @@ function Home(): JSX.Element {
           <AnimatedIcon
             name="reload"
             color="green"
-            size={40 * fontScale}
+            size={40}
             onPress={handleReload}
             style={{transform: [{rotate: spin}]}}
             onPressIn={() => spinner.start()}
           />
         </View>
-      </CustomScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 }

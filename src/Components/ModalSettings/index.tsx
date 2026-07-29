@@ -135,7 +135,7 @@ export default function ModalSettings({
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
+              <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
                 Bitcoin Addresses:
               </Text>
               <MaterialCommunityIcons
@@ -148,6 +148,7 @@ export default function ModalSettings({
               />
             </View>
             <TextInput
+              allowFontScaling
               style={[
                 styles.modalTextInput,
                 {
@@ -161,11 +162,12 @@ export default function ModalSettings({
               onChangeText={text => setBitcoinAddress(text)}
               autoCapitalize="none"
             />
-            <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
+            <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
               Invested Amount:
             </Text>
             <TextInput
-              style={[
+              allowFontScaling
+              style={[ 
                 styles.modalTextInput,
                 {
                   color: textColor.colorData,
@@ -180,7 +182,7 @@ export default function ModalSettings({
               keyboardType="numbers-and-punctuation"
             />
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={[styles.labelText, {color: textColor.colorTitle}]}>
+              <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
                 Currency:
               </Text>
               <MaterialCommunityIcons
@@ -193,6 +195,7 @@ export default function ModalSettings({
               />
             </View>
             <TextInput
+              allowFontScaling
               style={[
                 styles.modalTextInput,
                 {

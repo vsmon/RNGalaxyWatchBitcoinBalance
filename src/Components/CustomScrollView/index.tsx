@@ -77,13 +77,17 @@ export default function CustomScrollView({
       ]}>
       <ScrollView
         refreshControl={refreshControl}
-        contentContainerStyle={contentContainerStyle}
+        contentContainerStyle={[{flexGrow: 1}, contentContainerStyle]}
         ref={scrollViewRef}
         onContentSizeChange={handleContentSizeChange}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false} // Esconde o nativo
-        style={{flex: 1}}>
+        keyboardShouldPersistTaps="handled"
+        nestedScrollEnabled={true}
+        overScrollMode="always"
+        style={{flex: 1}}
+      >
         {children}
       </ScrollView>
       {indicatorHeight > 0 && showIndicator && (

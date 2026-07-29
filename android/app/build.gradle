@@ -97,8 +97,8 @@ android {
         wear {
             dimension "device"
             //applicationIdSuffix ".wear"
-            versionCode 10011
-            versionName "1.9"
+            versionCode 10012
+            versionName "1.10"
         }
 
     }
