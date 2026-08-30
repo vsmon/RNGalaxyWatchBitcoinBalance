@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -10,18 +10,19 @@ import {
   TextInput,
   View,
   Switch,
+  RefreshControl,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {getStoredData, storeData} from '../../Database';
+import { getStoredData, storeData } from '../../Database';
 import toastMessage from '../../Utils/ToastMessage';
-import {storedParams} from '../../types';
+import { storedParams } from '../../types';
 import CustomScrollView from '../CustomScrollView';
 import isWatch from '../../Utils/IsWatch';
-import {sendMessageToWatch} from '../../Services';
+import { sendMessageToWatch } from '../../Services';
 
 type ModalSettingsProps = {
   visible: boolean;
-  backgroundStyle: {backgroundColor: string};
+  backgroundStyle: { backgroundColor: string };
   onClose: any;
   darkMode: boolean;
 };
@@ -48,7 +49,7 @@ export default function ModalSettings({
       throw new Error('Bitcoin data not found');
     }
 
-    const {address, investedAmount, currency, darkMode} =
+    const { address, investedAmount, currency, darkMode } =
       storedData.bitcoinParams;
 
     if (isWatch()) {
@@ -112,30 +113,28 @@ export default function ModalSettings({
       transparent={false}
       onRequestClose={onClose}
       animationType="none">
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#201d1d',
-          flexDirection: 'row',
-        }}>
-        <View style={[styles.modalContainer, darkModeBackgroundColor]}>
-          <MaterialCommunityIcons
-            name="close-circle"
-            color={textColor.colorTitle}
-            size={42}
-            onPress={onClose}
-          />
+      <View style={[styles.modalRoot, darkModeBackgroundColor]}>
+        {/* <ScrollView
+          showsVerticalScrollIndicator={true}
+          persistentScrollbar={true}
+          indicatorStyle={isDarkMode ? 'white' : 'black'}> */}
           <CustomScrollView
-            style={{}}
-            indicatorColor={textColor.backgroundColor}>
+                      style={{}}
+                      indicatorColor={textColor.backgroundColor}>
+          <View style={[styles.modalContainer, darkModeBackgroundColor]}>
+
+            <MaterialCommunityIcons
+              name="close-circle"
+              color={textColor.colorTitle}
+              size={42}
+              onPress={onClose}
+            />
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
+              <Text allowFontScaling style={[styles.labelText, { color: textColor.colorTitle }]}>
                 Bitcoin Addresses:
               </Text>
               <MaterialCommunityIcons
@@ -162,12 +161,12 @@ export default function ModalSettings({
               onChangeText={text => setBitcoinAddress(text)}
               autoCapitalize="none"
             />
-            <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
+            <Text allowFontScaling style={[styles.labelText, { color: textColor.colorTitle }]}>
               Invested Amount:
             </Text>
             <TextInput
               allowFontScaling
-              style={[ 
+              style={[
                 styles.modalTextInput,
                 {
                   color: textColor.colorData,
@@ -181,8 +180,8 @@ export default function ModalSettings({
               autoCapitalize="none"
               keyboardType="numbers-and-punctuation"
             />
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text allowFontScaling style={[styles.labelText, {color: textColor.colorTitle}]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text allowFontScaling style={[styles.labelText, { color: textColor.colorTitle }]}>
                 Currency:
               </Text>
               <MaterialCommunityIcons
@@ -222,7 +221,7 @@ export default function ModalSettings({
                 color={textColor.colorTitle}
               />
               <Switch
-                trackColor={{false: '#3e3e3e', true: '#3e3e3e'}}
+                trackColor={{ false: '#3e3e3e', true: '#3e3e3e' }}
                 thumbColor={isDarkMode ? '#002792' : '#FFFF22'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={value => setIsDarkMode(value)}
@@ -241,7 +240,7 @@ export default function ModalSettings({
               name="content-save-all"
               color="#2194A4"
               size={42}
-              style={{alignSelf: 'center'}}
+              style={{ alignSelf: 'center' }}
               onPress={() => {
                 const address: string[] = bitcoinAddress.split(',');
                 const bitcoinParams = {
@@ -261,19 +260,28 @@ export default function ModalSettings({
                 }
               }}
             />
-          </CustomScrollView>
-        </View>
+
+          </View>
+        </CustomScrollView>
+
       </View>
+
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  modalRoot: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
   modalContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     width: screenWidth,
-    height: screenWidth,
+    minHeight: screenWidth,
     borderRadius: screenWidth,
     borderWidth: 1.2,
     borderColor: '#000',

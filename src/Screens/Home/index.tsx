@@ -24,7 +24,7 @@ import {
   sendMessageToWatch,
   getBitcoinAmountBlockChain,
 } from '../../Services';
-import ModalSettings from '../../Components/ModalSettings';
+import ModalSettings from '../../Components/ModalSettings/index';
 
 import {storedData, storedParams} from '../../types';
 import FormatNumber from '../../Utils/FormatNumberToLocaleString';
@@ -145,7 +145,7 @@ function Home(): JSX.Element {
       const bitcoinPrice: number = await getBitcoinPrice(currency);
 
       const bitcoinAmount: number = await getBitcoinAmountBlockChain(
-        address.join('|'),
+        address.join('|') ,
       );
 
       const bitcoinBalance: number = bitcoinAmount * bitcoinPrice;
@@ -299,11 +299,11 @@ function Home(): JSX.Element {
         <View
           style={[
             backgroundStyle,
-            {
+            {  
+              width: screenWidth,
+              minHeight: screenWidth,
               alignItems: 'center',
               justifyContent: 'center',
-              /* width: screenWidth,
-              height: screenWidth, */
               borderRadius: screenWidth,
               borderWidth: 1.2,
               borderColor: '#000',

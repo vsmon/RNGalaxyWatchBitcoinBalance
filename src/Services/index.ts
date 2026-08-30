@@ -36,8 +36,15 @@ async function getBitcoinPrice(currency: string): Promise<number> {
 
 async function getBitcoinAmountBlockChain(address: string): Promise<number> {
   const URL = `https://blockchain.info/multiaddr?active=${address}&n=0&format=json`; /* Address Separate by | (pipeline) */
+  console.log('URL blockchain.info================', URL);
   try {
-    const response = await fetch(URL);
+    const response = await fetch(URL, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
     if (response.status !== 200) {
       throw new Error('Error to get wallet values!');
     }
